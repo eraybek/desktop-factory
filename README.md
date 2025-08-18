@@ -1,1 +1,1 @@
-# desktop-farmer
+# desktop-tycoon
