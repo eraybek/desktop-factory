@@ -3,10 +3,10 @@ using UnityEngine.Tilemaps;
 
 public class GridInputHandler : MonoBehaviour
 {
-    [Header("References")]
-    public Tilemap highlightTilemap;
-    public TileBase highlightTile;
-    public Tilemap resourceTilemap;
+    [Header("Tilemap References")]
+    [SerializeField] private Tilemap highlightTilemap;
+    [SerializeField] private TileBase highlightTile;
+    [SerializeField] private Tilemap resourceTilemap;
 
     private Vector2Int? lastHoverCell;
 
@@ -48,18 +48,23 @@ public class GridInputHandler : MonoBehaviour
                 {
                     Debug.Log($"Resource found - Type: {resourceTile.resourceType}");
                     Debug.Log($"Tile name: {tile.name}");
+                    
+                    ProduceResource(resourceTile.resourceType);
                 }
-                else
-                {
-                    Debug.Log($"Tile found but not a ResourceTile: {tile.name}");
-                }
-            }
-            else
-            {
-                Debug.Log("No tile at this position - cell is empty");
             }
         }
     }
-
+    
+    private void ProduceResource(ResourceType resourceType)
+    {
+        if (ResourceProductionManager.Instance != null)
+        {
+            ResourceProductionManager.Instance.ProcessResourceProduction(resourceType);
+        }
+        else
+        {
+            Debug.LogWarning("ResourceProductionManager instance not found!");
+        }
+    }
 }
 
